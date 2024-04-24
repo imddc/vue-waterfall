@@ -1,4 +1,6 @@
 <script setup lang="ts">
+// TODO: waterfall
+// TODO: be a plugin and push to github
 useHead({
   title: 'Home'
 })
