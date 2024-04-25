@@ -1,6 +1,5 @@
 <template>
   <div bg-gray-2>
-    example
     <Waterfall
       :gap="waterfallConfig.gap"
       :padding="waterfallConfig.padding"
@@ -15,17 +14,11 @@
       </template>
     </Waterfall>
 
-    <nav>this is a nav</nav>
+    <Sider v-if="siderShow" />
   </div>
 </template>
 
 <script setup lang="ts">
-// TODO: use component
-
 const { data, waterfallConfig, calcHeight } = useWaterFall()
-watchEffect(() => {
-  console.log(data)
-})
+const { siderShow } = useSider()
 </script>
-
-<style></style>

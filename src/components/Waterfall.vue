@@ -104,8 +104,6 @@ watchEffect(() => {
     const left = (itemWidth.value + props.gap) * columnIndex
     const height = props.calcItemHeight(props.items[i], itemWidth.value)
 
-    console.log('columnIndex :>> ', columnIndex, 'top', top, 'left', left)
-
     const space: RenderItem = {
       index: i,
       column: columnIndex,
