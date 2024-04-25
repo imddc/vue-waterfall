@@ -6,8 +6,10 @@
   "singleQuote": true,
   "trailingComma": "none",
   "bracketSpacing": true,
-  "bracketSameLine": true,
-  "plugins": ["@ianvs/prettier-plugin-sort-imports"],
+  "bracketSameLine": false,
+  "plugins": [
+    "@ianvs/prettier-plugin-sort-imports"
+  ],
   "importOrder": [
     "<BUILTIN_MODULES>",
     "<THIRD_PARTY_MODULES>",

@@ -4,8 +4,8 @@ import { setupStore } from './plugins/pinia'
 import { setupRouter } from './plugins/router'
 
 import '@unocss/reset/tailwind.css'
-import './styles/main.css'
 import 'virtual:uno.css'
+import './styles/main.css'
 
 const app = createApp(App)
 setupStore(app)

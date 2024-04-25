@@ -1,14 +1,19 @@
 <template>
   <div>
     example
-    <Waterfall />
-
-    <div>
-      <div v-for="item of data.list" :key="item.id">
-        {{ item.url }}
-        <img :src="item.url" alt="" />
-      </div>
-    </div>
+    <Waterfall
+      :gap="waterfallConfig.gap"
+      :padding="waterfallConfig.padding"
+      :min-item-width="waterfallConfig.minItemWidth"
+      :min-column-count="waterfallConfig.minColumnCount"
+      :max-column-count="waterfallConfig.maxColumnCount"
+      :calc-item-height="calcHeight"
+      :items="data.list"
+    >
+      <template #default="{ item }">
+        <Card :data="item.item" />
+      </template>
+    </Waterfall>
 
     <nav>this is a nav</nav>
   </div>
@@ -17,7 +22,7 @@
 <script setup lang="ts">
 // TODO: use component
 
-const { data } = useWaterFall()
+const { data, waterfallConfig, calcHeight } = useWaterFall()
 watchEffect(() => {
   console.log(data)
 })

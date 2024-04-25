@@ -28,3 +28,13 @@ export interface WaterfallItem {
     background: string
   }
 }
+
+export interface RenderItem {
+  item: WaterfallItem
+  index: number
+  column: number
+  width: number
+  height: number
+  left: number
+  top: number
+}

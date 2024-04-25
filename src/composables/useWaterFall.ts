@@ -1,4 +1,4 @@
-import { ResponseType } from '~/types/index.dto'
+import { ResponseType, WaterfallItem } from '~/types/index.dto'
 
 const proxy_base_url = 'https://px.s.rainchan.win/'
 const handlerUrl = (url: string): string => {
@@ -8,6 +8,17 @@ const handlerUrl = (url: string): string => {
 }
 
 export const useWaterFall = () => {
+  // TODO: 配置项
+  const waterfallConfig = reactive({
+    minColumnCount: 3,
+    maxColumnCount: 5,
+    minItemWidth: 200,
+    padding: 10,
+    gap: 10,
+    loading: false,
+    bottomDistance: 10
+  })
+
   // [x]: 先请求数据
   const data = reactive<ResponseType & { end: boolean }>({
     page: 0,
@@ -43,12 +54,44 @@ export const useWaterFall = () => {
     ]
   }
 
-  // TODO: 触底加载
+  async function checkLoadMore() {
+    if (data.end) {
+      return
+    }
+
+    if (waterfallConfig.loading) {
+      return
+    }
+
+    const scrollHeight = document.documentElement.scrollHeight
+    const clientHeight = document.documentElement.clientHeight
+    const scrollTop = document.documentElement.scrollTop
+
+    const distance = scrollHeight - clientHeight - scrollTop
+
+    if (distance <= waterfallConfig.bottomDistance) {
+      waterfallConfig.loading = true
+      await requestData()
+      waterfallConfig.loading = false
+    }
+
+    requestAnimationFrame(checkLoadMore)
+  }
+
+  const calcHeight = (item: WaterfallItem, itemWidth: number) => {
+    const { width, height } = item
+    return (itemWidth * height) / width
+  }
+
+  // [x]: 触底加载
   onBeforeMount(() => {
     requestData()
+    // checkLoadMore()
   })
 
   return {
-    data
+    data,
+    waterfallConfig,
+    calcHeight
   }
 }
