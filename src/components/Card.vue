@@ -9,14 +9,7 @@
     flex
     flex-col
   >
-    <div
-      v-if="!noImage"
-      flex-center
-      w-full
-      h-full
-      bg-bluegray
-      @click="loaded = !loaded"
-    >
+    <div v-if="!noImage" flex-center w-full h-full bg-bluegray>
       <Transition name="fade">
         <img
           v-if="loaded"
