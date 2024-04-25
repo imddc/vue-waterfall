@@ -31,7 +31,7 @@ export const useWaterFall = () => {
   const waterfallConfig = reactive({
     minColumnCount: 3,
     maxColumnCount: 6,
-    minItemWidth: 200,
+    minItemWidth: 150,
     padding: 10,
     gap: 10,
     loading: false,

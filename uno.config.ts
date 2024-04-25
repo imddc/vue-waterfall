@@ -21,6 +21,10 @@ export default defineConfig({
     [
       'icon-btn',
       'inline-block cursor-pointer select-none opacity-75 transition duration-200 ease-in-out hover:opacity-100 hover:text-teal-600'
+    ],
+    [
+      'sider-item-wrap',
+      ' flex-between p-10 b="1 gray-200 solid" rounded-10 mt-14'
     ]
   ],
   presets: [

@@ -77,10 +77,6 @@ const itemWidth = computed(() => {
   return Math.ceil((containerWidth.value - gapWidth) / columnCount.value)
 })
 
-watchEffect(() => {
-  console.log('columnCount :>> ', columnCount.value)
-})
-
 const itemSpaces = ref<RenderItem[]>([])
 watchEffect(() => {
   if (!columnCount.value) {
