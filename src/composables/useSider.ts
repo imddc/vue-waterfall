@@ -5,7 +5,7 @@ export const useSider = () => {
     document.body.style.height = window.innerHeight + 'px'
     if (window.innerWidth > 768) {
       siderShow.value = true
-      document.body.style.paddingRight = 300 + 'px'
+      document.body.style.paddingLeft = 300 + 'px'
       return
     }
 
