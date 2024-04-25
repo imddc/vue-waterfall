@@ -33,8 +33,8 @@ interface WaterfallProps {
 }
 
 const props = withDefaults(defineProps<WaterfallProps>(), {
-  minColumnNumber: 2,
-  maxColumnNumber: 4,
+  minColumnCount: 2,
+  maxColumnCount: 5,
   gap: 10,
   padding: 10,
   minItemWidth: 200,
@@ -66,7 +66,7 @@ const columnCount = computed<number>(() => {
     }
     return count
   }
-  return props.minColumnNumber
+  return props.minColumnCount
 })
 const columnTop = ref(new Array(columnCount.value).fill(0))
 const itemWidth = computed(() => {

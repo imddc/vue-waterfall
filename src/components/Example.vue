@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div bg-gray-2>
     example
     <Waterfall
       :gap="waterfallConfig.gap"

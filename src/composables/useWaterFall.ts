@@ -1,3 +1,6 @@
+import { render } from 'vue'
+
+import Card from '~/components/Card.vue'
 import { ResponseType, WaterfallItem } from '~/types/index.dto'
 
 const proxy_base_url = 'https://px.s.rainchan.win/'
@@ -7,11 +10,27 @@ const handlerUrl = (url: string): string => {
   return proxy_base_url + 'c/540x540_70/img-master/' + url
 }
 
+function getRealHeight(item: WaterfallItem, width: number) {
+  const div = document.createElement('div')
+  render(
+    h(Card, {
+      data: item,
+      width: width + 'px',
+      noImage: true
+    }),
+    div
+  )
+  document.body.appendChild(div)
+  const { height } = div.getBoundingClientRect()
+  document.body.removeChild(div)
+  return height
+}
+
 export const useWaterFall = () => {
   // TODO: 配置项
   const waterfallConfig = reactive({
     minColumnCount: 3,
-    maxColumnCount: 5,
+    maxColumnCount: 6,
     minItemWidth: 200,
     padding: 10,
     gap: 10,
@@ -80,13 +99,13 @@ export const useWaterFall = () => {
 
   const calcHeight = (item: WaterfallItem, itemWidth: number) => {
     const { width, height } = item
-    return (itemWidth * height) / width
+    const realHeight = getRealHeight(item, itemWidth)
+    return (itemWidth * height) / width + realHeight
   }
 
   // [x]: 触底加载
   onBeforeMount(() => {
-    requestData()
-    // checkLoadMore()
+    checkLoadMore()
   })
 
   return {
