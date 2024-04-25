@@ -286,6 +286,7 @@ declare global {
   const useViewTransition: typeof import('./composables/useViewTransition')['useViewTransition']
   const useVirtualList: typeof import('@vueuse/core')['useVirtualList']
   const useWakeLock: typeof import('@vueuse/core')['useWakeLock']
+  const useWaterFall: typeof import('./composables/useWaterFall')['useWaterFall']
   const useWebNotification: typeof import('@vueuse/core')['useWebNotification']
   const useWebSocket: typeof import('@vueuse/core')['useWebSocket']
   const useWebWorker: typeof import('@vueuse/core')['useWebWorker']
@@ -599,6 +600,7 @@ declare module 'vue' {
     readonly useViewTransition: UnwrapRef<typeof import('./composables/useViewTransition')['useViewTransition']>
     readonly useVirtualList: UnwrapRef<typeof import('@vueuse/core')['useVirtualList']>
     readonly useWakeLock: UnwrapRef<typeof import('@vueuse/core')['useWakeLock']>
+    readonly useWaterFall: UnwrapRef<typeof import('./composables/useWaterFall')['useWaterFall']>
     readonly useWebNotification: UnwrapRef<typeof import('@vueuse/core')['useWebNotification']>
     readonly useWebSocket: UnwrapRef<typeof import('@vueuse/core')['useWebSocket']>
     readonly useWebWorker: UnwrapRef<typeof import('@vueuse/core')['useWebWorker']>
@@ -905,6 +907,7 @@ declare module '@vue/runtime-core' {
     readonly useViewTransition: UnwrapRef<typeof import('./composables/useViewTransition')['useViewTransition']>
     readonly useVirtualList: UnwrapRef<typeof import('@vueuse/core')['useVirtualList']>
     readonly useWakeLock: UnwrapRef<typeof import('@vueuse/core')['useWakeLock']>
+    readonly useWaterFall: UnwrapRef<typeof import('./composables/useWaterFall')['useWaterFall']>
     readonly useWebNotification: UnwrapRef<typeof import('@vueuse/core')['useWebNotification']>
     readonly useWebSocket: UnwrapRef<typeof import('@vueuse/core')['useWebSocket']>
     readonly useWebWorker: UnwrapRef<typeof import('@vueuse/core')['useWebWorker']>

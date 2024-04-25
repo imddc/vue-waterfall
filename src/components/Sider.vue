@@ -1,8 +1,5 @@
 <template>
-  <div>
-    index page
-    <Example />
-  </div>
+  <div>sider</div>
 </template>
 
 <script setup lang="ts"></script>
