@@ -64,12 +64,17 @@ const loaded = ref(false)
 const height = ref('auto')
 
 onBeforeMount(() => {
+  if (props.noImage) {
+    return
+  }
   height.value = '100%'
   new Promise((resolve) => {
     const img = new Image()
+    img.src = props.data.url
     if (img.complete) {
       loaded.value = true
       resolve(true)
+      return
     }
     img.onload = () => {
       loaded.value = true
@@ -80,8 +85,6 @@ onBeforeMount(() => {
       loaded.value = true
       resolve(true)
     }
-
-    img.src = props.data.url
   })
 })
 </script>
