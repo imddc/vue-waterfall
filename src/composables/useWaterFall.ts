@@ -49,14 +49,19 @@ export const useWaterFall = () => {
   })
 
   async function requestData() {
-    if (data.end) {
+    if (data.end || waterfallConfig.loading) {
       return
     }
 
+    waterfallConfig.loading = true
     data.page++
     const resp: ResponseType = await fetch(
       `https://mock.tatakai.top/images/${data.page}/${data.size}`
-    ).then((res) => res.json())
+    )
+      .then((res) => res.json())
+      .finally(() => {
+        waterfallConfig.loading = false
+      })
 
     if (resp.list.length === 0) {
       data.end = true
@@ -74,11 +79,7 @@ export const useWaterFall = () => {
   }
 
   async function checkLoadMore() {
-    if (data.end) {
-      return
-    }
-
-    if (waterfallConfig.loading) {
+    if (data.end || waterfallConfig.loading) {
       return
     }
 
@@ -89,9 +90,7 @@ export const useWaterFall = () => {
     const distance = scrollHeight - clientHeight - scrollTop
 
     if (distance <= waterfallConfig.bottomDistance) {
-      waterfallConfig.loading = true
       await requestData()
-      waterfallConfig.loading = false
     }
 
     requestAnimationFrame(checkLoadMore)

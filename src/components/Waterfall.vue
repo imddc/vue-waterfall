@@ -1,19 +1,21 @@
 <template>
-  <div
-    ref="containerRef"
-    :style="{
-      height: Math.max(...columnTop) + 'px',
-      padding: isNumber(padding) ? padding + 'px' : padding
-    }"
-    relative
-  >
+  <div h-screen>
     <div
-      v-for="item in itemSpaces"
-      :key="item.index"
-      :style="containerStyles(item)"
-      absolute
+      ref="containerRef"
+      :style="{
+        height: Math.max(...columnTop) || 100 + 'px',
+        padding: isNumber(padding) ? padding + 'px' : padding
+      }"
+      relative
     >
-      <slot :item="item"></slot>
+      <div
+        v-for="item in itemSpaces"
+        :key="item.index"
+        :style="containerStyles(item)"
+        absolute
+      >
+        <slot :item="item"></slot>
+      </div>
     </div>
   </div>
 </template>

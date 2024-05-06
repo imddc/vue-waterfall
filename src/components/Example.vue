@@ -1,18 +1,25 @@
 <template>
   <div bg-gray-2>
-    <Waterfall
-      :gap="waterfallConfig.gap"
-      :padding="waterfallConfig.padding"
-      :min-item-width="waterfallConfig.minItemWidth"
-      :min-column-count="waterfallConfig.minColumnCount"
-      :max-column-count="waterfallConfig.maxColumnCount"
-      :calc-item-height="calcHeight"
-      :items="data.list"
-    >
-      <template #default="{ item }">
-        <Card :data="item.item" />
-      </template>
-    </Waterfall>
+    <Transition name="fade">
+      <div v-if="!data.list.length" h-screen flex-center w-full>
+        <Loading />
+      </div>
+
+      <Waterfall
+        v-else
+        :gap="waterfallConfig.gap"
+        :padding="waterfallConfig.padding"
+        :min-item-width="waterfallConfig.minItemWidth"
+        :min-column-count="waterfallConfig.minColumnCount"
+        :max-column-count="waterfallConfig.maxColumnCount"
+        :calc-item-height="calcHeight"
+        :items="data.list"
+      >
+        <template #default="{ item }">
+          <Card :data="item.item" />
+        </template>
+      </Waterfall>
+    </Transition>
 
     <nav v-if="siderShow" fixed left-0 bottom-0 top-0 p-14 w-300>
       <div sider-item-wrap>
