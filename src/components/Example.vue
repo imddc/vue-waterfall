@@ -60,7 +60,7 @@
 const { data, waterfallConfig, calcHeight } = useWaterFall()
 const { siderShow, siderWidth } = useSider()
 
-// TODO: 根据col计算 反推配置项
+// [x]: 根据col计算 反推配置项
 const { minColumnCount, maxColumnCount, minItemWidth } = toRefs(waterfallConfig)
 
 function handleSetMinColumnCount(num: number | undefined) {
