@@ -18,20 +18,29 @@
       <div sider-item-wrap>
         <p>最小列数</p>
         <el-input-number
-          v-model="waterfallConfig.minColumnCount"
-          :min="1"
+          :model-value="minColumnCount"
+          :min="2"
           :max="10"
+          @update:model-value="handleSetMinColumnCount"
         />
       </div>
 
       <div sider-item-wrap>
         <p>最大列数</p>
-        <el-input-number v-model="waterfallConfig.maxColumnCount" :min="1" />
+        <el-input-number
+          :model-value="maxColumnCount"
+          :min="2"
+          :max="10"
+          @change="handleSetMaxColumnCount"
+        />
       </div>
 
       <div sider-item-wrap>
         <p>最小宽度</p>
-        <el-input-number v-model="waterfallConfig.minItemWidth" />
+        <el-input-number
+          :model-value="waterfallConfig.minItemWidth"
+          @update:model-value="handleSetMinItemWidth"
+        />
       </div>
 
       <div sider-item-wrap>
@@ -49,5 +58,70 @@
 
 <script setup lang="ts">
 const { data, waterfallConfig, calcHeight } = useWaterFall()
-const { siderShow } = useSider()
+const { siderShow, siderWidth } = useSider()
+
+// TODO: 根据col计算 反推配置项
+const { minColumnCount, maxColumnCount, minItemWidth } = toRefs(waterfallConfig)
+
+function handleSetMinColumnCount(num: number | undefined) {
+  if (typeof num !== 'number') {
+    return
+  }
+
+  const containerWidth = document.body.clientWidth - siderWidth
+  const col = Math.floor(containerWidth / minItemWidth.value)
+
+  if (col < 2) {
+    return
+  }
+
+  if (num > maxColumnCount.value) {
+    return
+  }
+
+  minColumnCount.value = num
+}
+
+function handleSetMaxColumnCount(num: number | undefined) {
+  if (typeof num !== 'number') {
+    return
+  }
+  if (num < minColumnCount.value) {
+    return
+  }
+  const containerWidth = document.body.clientWidth - siderWidth
+  const col = Math.floor(containerWidth / minItemWidth.value)
+
+  if (num > col) {
+    return
+  }
+  maxColumnCount.value = num
+}
+
+function handleSetMinItemWidth(num: number | undefined) {
+  if (typeof num !== 'number') {
+    return
+  }
+  const containerWidth = document.body.clientWidth - siderWidth
+  const col = Math.floor(containerWidth / num)
+
+  if (col < 2) {
+    return
+  }
+
+  minItemWidth.value = num
+}
+
+watchEffect(() => {
+  const containerWidth = document.body.clientWidth - siderWidth
+  const col = Math.floor(containerWidth / minItemWidth.value)
+
+  if (maxColumnCount.value > col) {
+    maxColumnCount.value = col
+  }
+
+  if (minColumnCount.value > col) {
+    minColumnCount.value = col
+  }
+})
 </script>

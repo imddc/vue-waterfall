@@ -27,7 +27,7 @@ function getRealHeight(item: WaterfallItem, width: number) {
 }
 
 export const useWaterFall = () => {
-  // TODO: 配置项
+  // [x]: 配置项
   const waterfallConfig = reactive({
     minColumnCount: 3,
     maxColumnCount: 6,
