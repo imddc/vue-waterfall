@@ -15,7 +15,7 @@
     "@vueuse/core": "^10.9.0",
     "element-plus": "^2.7.1",
     "vue": "^3.4.25",
-    "waterfall-vue": "workspace:^"
+    "waterfall-vue": "^0.0.2"
   },
   "devDependencies": {
     "@iconify-json/carbon": "^1.1.31",
