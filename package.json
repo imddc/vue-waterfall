@@ -13,12 +13,14 @@
     "lint": "eslint ./ --ext .ts,.js,.json,.vue --max-warnings=0",
     "lint:fix": "eslint --fix ./ --ext .ts,.js,.vue",
     "format": "prettier --write .",
+    "wf": "pnpm --filter waterfall-vue",
     "example": "pnpm --filter @vue-waterfall/example",
     "example:dev": "pnpm example dev",
-    "example:build": "pnpm example build",
+    "example:build": "pnpm wf build && pnpm example build",
     "example:preview": "pnpm example preview"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.1",
     "@commitlint/cli": "^18.6.1",
     "@commitlint/config-conventional": "^18.6.3",
     "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
