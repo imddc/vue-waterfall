@@ -13,47 +13,17 @@
       :style="containerStyles(item)"
       absolute
     >
-      <slot :item="item"></slot>
+      <slot :item="item">
+        <img w-full h-full :src="item.item.url" alt="item url" />
+      </slot>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T">
 import { computed, ref, watchEffect, withDefaults } from 'vue'
-
 import { useElementSize } from './composables'
-
-export interface WaterfallItem {
-  id: number
-  title: string
-  ts: number
-  width: number
-  height: number
-  tags: string[]
-  statistic: {
-    bookmarks: number
-    likes: number
-    comments: number
-    views: number
-  }
-  url: string
-  author: {
-    id: number
-    name: string
-    bio: string
-    avatar: string
-    background: string
-  }
-}
-export interface RenderItem {
-  item: WaterfallItem
-  index: number
-  column: number
-  width: number
-  height: number
-  left: number
-  top: number
-}
+import { ItemType, RenderItem } from './types'
 
 // [x]: 完成瀑布流
 interface WaterfallProps {
@@ -62,7 +32,7 @@ interface WaterfallProps {
   gap?: number
   padding?: number | string
   minItemWidth?: number
-  items: WaterfallItem[]
+  items: ItemType<T>[]
   calcItemHeight?: (item: any, itemWidth: number) => number
 }
 
@@ -73,7 +43,7 @@ const props = withDefaults(defineProps<WaterfallProps>(), {
   padding: 10,
   minItemWidth: 200,
   items: () => [],
-  calcItemHeight: () => 250
+  calcItemHeight: (item, itemWidth) => (itemWidth * item.height) / item.width
 })
 defineSlots<{
   default(props: { item: RenderItem }): any
@@ -162,5 +132,3 @@ function getColumnIndex() {
   return columnTop.value.indexOf(Math.min(...columnTop.value))
 }
 </script>
-
-<style></style>

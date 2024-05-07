@@ -1,5 +1,4 @@
 import { render } from 'vue'
-
 import Card from '~/components/Card.vue'
 import { ResponseType, WaterfallItem } from '~/types/index.dto'
 
