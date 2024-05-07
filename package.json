@@ -14,9 +14,10 @@
     "lint:fix": "eslint --fix ./ --ext .ts,.js,.vue",
     "format": "prettier --write .",
     "wf": "pnpm --filter waterfall-vue",
+    "wf:build": "pnpm wf build",
     "example": "pnpm --filter @vue-waterfall/example",
     "example:dev": "pnpm example dev",
-    "example:build": "pnpm wf build && pnpm example build",
+    "example:build": "pnpm wf:build && pnpm example build",
     "example:preview": "pnpm example preview"
   },
   "devDependencies": {
