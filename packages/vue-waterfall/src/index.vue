@@ -1,27 +1,59 @@
 <template>
-  <div h-screen>
+  <div
+    ref="containerRef"
+    :style="{
+      height: Math.max(...columnTop) || 100 + 'px',
+      padding: isNumber(padding) ? padding + 'px' : padding
+    }"
+    relative
+  >
     <div
-      ref="containerRef"
-      :style="{
-        height: Math.max(...columnTop) || 100 + 'px',
-        padding: isNumber(padding) ? padding + 'px' : padding
-      }"
-      relative
+      v-for="item in itemSpaces"
+      :key="item.index"
+      :style="containerStyles(item)"
+      absolute
     >
-      <div
-        v-for="item in itemSpaces"
-        :key="item.index"
-        :style="containerStyles(item)"
-        absolute
-      >
-        <slot :item="item"></slot>
-      </div>
+      <slot :item="item"></slot>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { RenderItem, WaterfallItem } from '~/types/index.dto'
+import { computed, ref, watchEffect, withDefaults } from 'vue'
+
+import { useElementSize } from './composables'
+
+export interface WaterfallItem {
+  id: number
+  title: string
+  ts: number
+  width: number
+  height: number
+  tags: string[]
+  statistic: {
+    bookmarks: number
+    likes: number
+    comments: number
+    views: number
+  }
+  url: string
+  author: {
+    id: number
+    name: string
+    bio: string
+    avatar: string
+    background: string
+  }
+}
+export interface RenderItem {
+  item: WaterfallItem
+  index: number
+  column: number
+  width: number
+  height: number
+  left: number
+  top: number
+}
 
 // [x]: 完成瀑布流
 interface WaterfallProps {
