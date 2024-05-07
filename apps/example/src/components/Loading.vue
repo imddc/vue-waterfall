@@ -44,7 +44,7 @@
 <script setup lang="ts">
 const props = withDefaults(
   defineProps<{
-    size: string | number
+    size?: string | number
   }>(),
   {
     size: 16

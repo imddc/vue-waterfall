@@ -1,5 +1,5 @@
 {
-  "extends": ["./tsconfig.option.json"],
+  "extends": ["../../tsconfig.option.json"],
   "compilerOptions": {
     "target": "ESNext",
     "jsx": "preserve",

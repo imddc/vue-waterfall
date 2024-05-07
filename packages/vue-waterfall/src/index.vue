@@ -2,7 +2,7 @@
   <div
     ref="containerRef"
     :style="{
-      height: Math.max(...columnTop) || 100 + 'px',
+      height: Math.max(...columnTop) + 'px',
       padding: isNumber(padding) ? padding + 'px' : padding
     }"
     relative
