@@ -6,6 +6,7 @@
   "main": "./dist/bundle.js",
   "module": "./dist/bundle.js",
   "typings": "./dist/index.d.ts",
+  "license": "MIT",
   "files": [
     "dist"
   ],
