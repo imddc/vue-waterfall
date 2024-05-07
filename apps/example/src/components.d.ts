@@ -8,16 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Card: typeof import('./components/Card.vue')['default']
-    ElForm: typeof import('element-plus/es')['ElForm']
-    ElInput: typeof import('element-plus/es')['ElInput']
     ElInputNumber: typeof import('element-plus/es')['ElInputNumber']
-    Example: typeof import('./components/Example.vue')['default']
-    Footer: typeof import('./components/Footer.vue')['default']
-    HelloWorld: (typeof import('./components/HelloWorld.vue'))['default']
     Loading: typeof import('./components/Loading.vue')['default']
-    RouterLink: typeof import('vue-router')['RouterLink']
-    RouterView: typeof import('vue-router')['RouterView']
-    Sider: typeof import('./components/Sider.vue')['default']
-    Waterfall: typeof import('./components/Waterfall.vue')['default']
   }
 }
