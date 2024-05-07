@@ -2,26 +2,29 @@
   <div
     ref="containerRef"
     :style="{
+      position: 'relative',
       height: Math.max(...columnTop) + 'px',
       padding: isNumber(padding) ? padding + 'px' : padding
     }"
-    relative
   >
     <div
       v-for="item in itemSpaces"
       :key="item.index"
       :style="containerStyles(item)"
-      absolute
     >
       <slot :item="item">
-        <img w-full h-full :src="item.item.url" alt="item url" />
+        <img
+          :src="item.item.url"
+          alt="item url"
+          style="width: 100%; height: 100%"
+        />
       </slot>
     </div>
   </div>
 </template>
 
 <script setup lang="ts" generic="T">
-import { computed, ref, watchEffect, withDefaults } from 'vue'
+import { computed, CSSProperties, ref, watchEffect, withDefaults } from 'vue'
 import { useElementSize } from './composables'
 import { ItemType, RenderItem } from './types'
 
@@ -36,6 +39,9 @@ interface WaterfallProps {
   calcItemHeight?: (item: any, itemWidth: number) => number
 }
 
+defineOptions({
+  name: 'Waterfall'
+})
 const props = withDefaults(defineProps<WaterfallProps>(), {
   minColumnCount: 2,
   maxColumnCount: 5,
@@ -49,7 +55,8 @@ defineSlots<{
   default(props: { item: RenderItem }): any
 }>()
 
-const containerStyles = (item: RenderItem) => ({
+const containerStyles = (item: RenderItem): CSSProperties => ({
+  position: 'absolute',
   width: item.width + 'px',
   height: item.height + 'px',
   transition: 'all 0.3s ease-in-out',

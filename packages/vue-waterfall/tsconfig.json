@@ -1,8 +1,0 @@
-{
-  "extends": ["../../tsconfig.option.json"],
-  "compilerOptions": {
-    "baseUrl": ".",
-    "skipLibCheck": true
-  },
-  "includes": ["./**/*.ts", "./**/*.vue"]
-}

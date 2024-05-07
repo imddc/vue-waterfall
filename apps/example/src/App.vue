@@ -64,9 +64,10 @@
 </template>
 
 <script setup lang="ts">
-import Waterfall from 'vue-waterfall'
+import { Waterfall } from 'waterfall-vue'
 
 const { data, waterfallConfig, calcHeight } = useWaterFall()
+
 const { siderShow, siderWidth } = useSider()
 
 // [x]: 根据col计算 反推配置项
