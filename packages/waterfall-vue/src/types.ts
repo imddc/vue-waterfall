@@ -7,7 +7,7 @@ export interface WaterfallItem {
 export type ItemType<T = any> = WaterfallItem & T
 
 export interface RenderItem<T = any> {
-  item: ItemType<T>
+  data: ItemType<T>
   index: number
   column: number
   width: number

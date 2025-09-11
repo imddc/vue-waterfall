@@ -1,6 +1,7 @@
-import { ref, Ref, watch } from 'vue'
+import type { Ref } from 'vue'
+import { ref, watch } from 'vue'
 
-export const useElementSize = (el: Ref<HTMLElement | undefined>) => {
+export function useElementSize(el: Ref<HTMLElement | undefined>) {
   const width = ref(0)
   const height = ref(0)
 
@@ -16,11 +17,11 @@ export const useElementSize = (el: Ref<HTMLElement | undefined>) => {
       if (el) {
         observer.observe(el)
       }
-    }
+    },
   )
 
   return {
     width,
-    height
+    height,
   }
 }

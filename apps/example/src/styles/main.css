@@ -1,4 +1,5 @@
-@import url('./animation.scss');
+@import 'tailwindcss';
+@import './animation.scss';
 
 html,
 body,
@@ -15,4 +16,16 @@ html {
 
 body {
   font-size: 14px;
+}
+
+@utility flex-center {
+  @apply flex items-center justify-center;
+}
+
+@utility sider-item-wrap {
+  @apply flex items-center justify-between gap-2;
+
+  p {
+    font-size: larger;
+  }
 }

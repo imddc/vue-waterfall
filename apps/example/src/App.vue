@@ -1,74 +1,12 @@
-<template>
-  <div bg-gray-2>
-    <Transition name="fade">
-      <div v-if="!data.list.length" h-screen flex-center w-full>
-        <Loading />
-      </div>
-
-      <Waterfall
-        v-else
-        :gap="waterfallConfig.gap"
-        :padding="waterfallConfig.padding"
-        :min-item-width="waterfallConfig.minItemWidth"
-        :min-column-count="waterfallConfig.minColumnCount"
-        :max-column-count="waterfallConfig.maxColumnCount"
-        :calc-item-height="calcHeight"
-        :items="data.list"
-      >
-        <template #default="{ item }">
-          <Card :data="item.item" />
-        </template>
-      </Waterfall>
-    </Transition>
-
-    <nav v-if="siderShow" fixed left-0 bottom-0 top-0 p-14 w-300>
-      <div sider-item-wrap>
-        <p>最小列数</p>
-        <el-input-number
-          :model-value="minColumnCount"
-          :min="2"
-          :max="10"
-          @update:model-value="handleSetMinColumnCount"
-        />
-      </div>
-
-      <div sider-item-wrap>
-        <p>最大列数</p>
-        <el-input-number
-          :model-value="maxColumnCount"
-          :min="2"
-          :max="10"
-          @change="handleSetMaxColumnCount"
-        />
-      </div>
-
-      <div sider-item-wrap>
-        <p>最小宽度</p>
-        <el-input-number
-          :model-value="waterfallConfig.minItemWidth"
-          @update:model-value="handleSetMinItemWidth"
-        />
-      </div>
-
-      <div sider-item-wrap>
-        <p>padding</p>
-        <el-input-number v-model="waterfallConfig.padding" :min="0" />
-      </div>
-
-      <div sider-item-wrap>
-        <p>gap</p>
-        <el-input-number v-model="waterfallConfig.gap" :min="0" />
-      </div>
-    </nav>
-  </div>
-</template>
-
 <script setup lang="ts">
-import { Waterfall } from 'waterfall-vue'
+import { ElInputNumber } from 'element-plus'
+import { Waterfall } from 'vue-waterfall'
+import Card from './components/Card.vue'
+import Loading from './components/Loading.vue'
+import { useWaterFall } from './composables/useWaterFall'
+import { toRefs, watchEffect } from 'vue'
 
 const { data, waterfallConfig, calcHeight } = useWaterFall()
-
-const { siderShow, siderWidth } = useSider()
 
 // [x]: 根据col计算 反推配置项
 const { minColumnCount, maxColumnCount, minItemWidth } = toRefs(waterfallConfig)
@@ -78,7 +16,7 @@ function handleSetMinColumnCount(num: number | undefined) {
     return
   }
 
-  const containerWidth = document.body.clientWidth - siderWidth
+  const containerWidth = document.body.clientWidth
   const col = Math.floor(containerWidth / minItemWidth.value)
 
   if (col < 2) {
@@ -99,7 +37,7 @@ function handleSetMaxColumnCount(num: number | undefined) {
   if (num < minColumnCount.value) {
     return
   }
-  const containerWidth = document.body.clientWidth - siderWidth
+  const containerWidth = document.body.clientWidth
   const col = Math.floor(containerWidth / minItemWidth.value)
 
   if (num > col) {
@@ -112,7 +50,7 @@ function handleSetMinItemWidth(num: number | undefined) {
   if (typeof num !== 'number') {
     return
   }
-  const containerWidth = document.body.clientWidth - siderWidth
+  const containerWidth = document.body.clientWidth
   const col = Math.floor(containerWidth / num)
 
   if (col < 2) {
@@ -123,7 +61,7 @@ function handleSetMinItemWidth(num: number | undefined) {
 }
 
 watchEffect(() => {
-  const containerWidth = document.body.clientWidth - siderWidth
+  const containerWidth = document.body.clientWidth
   const col = Math.floor(containerWidth / minItemWidth.value)
 
   if (maxColumnCount.value > col) {
@@ -135,3 +73,76 @@ watchEffect(() => {
   }
 })
 </script>
+
+<template>
+  <div class="bg-gray-200">
+    <Transition name="fade">
+      <div v-if="!data.length" class="h-screen flex-center w-full">
+        <Loading />
+      </div>
+
+      <Waterfall
+        v-else
+        :gap="waterfallConfig.gap"
+        :padding="waterfallConfig.padding"
+        :min-item-width="waterfallConfig.minItemWidth"
+        :min-column-count="waterfallConfig.minColumnCount"
+        :max-column-count="waterfallConfig.maxColumnCount"
+        :calc-item-height="calcHeight"
+        :items="data"
+      >
+        <template #default="{ item }">
+          <Card :data="item.data" />
+        </template>
+        <template #header>
+          <div class="font-bold text-right">
+            Header
+          </div>
+        </template>
+      </Waterfall>
+    </Transition>
+
+    <div v-if="waterfallConfig.loading" class="flex-center mt-16">
+      <span class="text-gray-500 bg-gray-200 rounded-full px-4 py-2"> load more ...</span>
+    </div>
+
+    <nav
+      class="fixed left-10 top-10 p-14 w-300 space-y-14 bg-gray-500/50 backdrop-blur-3xl rounded-3xl shadow-2xl"
+    >
+      <div class="sider-item-wrap">
+        <p>最小列数</p>
+        <ElInputNumber
+          :model-value="minColumnCount"
+          :min="2"
+          :max="10"
+          @update:model-value="handleSetMinColumnCount"
+        />
+      </div>
+
+      <div class="sider-item-wrap">
+        <p>最大列数</p>
+        <ElInputNumber
+          :model-value="maxColumnCount"
+          :min="2"
+          :max="10"
+          @change="handleSetMaxColumnCount"
+        />
+      </div>
+
+      <div class="sider-item-wrap">
+        <p>最小宽度</p>
+        <ElInputNumber :model-value="waterfallConfig.minItemWidth" @update:model-value="handleSetMinItemWidth" />
+      </div>
+
+      <div class="sider-item-wrap">
+        <p>padding</p>
+        <ElInputNumber v-model="waterfallConfig.padding" :min="0" />
+      </div>
+
+      <div class="sider-item-wrap">
+        <p>gap</p>
+        <ElInputNumber v-model="waterfallConfig.gap" :min="0" />
+      </div>
+    </nav>
+  </div>
+</template>

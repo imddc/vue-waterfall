@@ -1,32 +1,8 @@
-<template>
-  <div
-    ref="containerRef"
-    :style="{
-      position: 'relative',
-      height: Math.max(...columnTop) + 'px',
-      padding: isNumber(padding) ? padding + 'px' : padding
-    }"
-  >
-    <div
-      v-for="item in itemSpaces"
-      :key="item.index"
-      :style="containerStyles(item)"
-    >
-      <slot :item="item">
-        <img
-          :src="item.item.url"
-          alt="item url"
-          style="width: 100%; height: 100%"
-        />
-      </slot>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts" generic="T">
-import { computed, CSSProperties, ref, watchEffect, withDefaults } from 'vue'
+import type { CSSProperties, VNode } from 'vue'
+import { computed, ref, watchEffect, withDefaults } from 'vue'
 import { useElementSize } from './composables'
-import { ItemType, RenderItem } from './types'
+import type { ItemType, RenderItem } from './types'
 
 // [x]: 完成瀑布流
 interface WaterfallProps {
@@ -35,33 +11,39 @@ interface WaterfallProps {
   gap?: number
   padding?: number | string
   minItemWidth?: number
-  items: ItemType<T>[]
+  items?: ItemType<T>[]
   calcItemHeight?: (item: any, itemWidth: number) => number
 }
 
 defineOptions({
-  name: 'Waterfall'
+  name: 'waterfall',
 })
-const props = withDefaults(defineProps<WaterfallProps>(), {
-  minColumnCount: 2,
-  maxColumnCount: 5,
-  gap: 10,
-  padding: 10,
-  minItemWidth: 200,
-  items: () => [],
-  calcItemHeight: (item, itemWidth) => (itemWidth * item.height) / item.width
-})
+const props = withDefaults(
+  defineProps<WaterfallProps>(),
+  {
+    minColumnCount: 2,
+    maxColumnCount: 5,
+    gap: 10,
+    padding: 10,
+    minItemWidth: 200,
+    items: () => ([]),
+    calcItemHeight: (item, itemWidth) => (itemWidth * item.height) / item.width,
+  },
+)
 defineSlots<{
-  default(props: { item: RenderItem }): any
+  default: (props: { item: RenderItem<T> }) => VNode
+  header: () => VNode
 }>()
 
-const containerStyles = (item: RenderItem): CSSProperties => ({
-  position: 'absolute',
-  width: item.width + 'px',
-  height: item.height + 'px',
-  transition: 'all 0.3s ease-in-out',
-  transform: `translate(${item.left}px, ${item.top}px)`
-})
+function containerStyles(item: RenderItem): CSSProperties {
+  return {
+    position: 'absolute',
+    width: `${item.width}px`,
+    height: `${item.height}px`,
+    transition: 'all 0.3s ease-in-out',
+    transform: `translate(${item.left}px, ${item.top}px)`,
+  }
+}
 
 const containerRef = ref<HTMLDivElement>()
 const { width: containerWidth } = useElementSize(containerRef)
@@ -79,7 +61,7 @@ const columnCount = computed<number>(() => {
   }
   return props.minColumnCount
 })
-const columnTop = ref(new Array(columnCount.value).fill(0))
+const columnTop = ref(Array.from({ length: columnCount.value }, () => 0))
 const itemWidth = computed(() => {
   if (!containerRef.value || columnCount.value <= 0) {
     return 0
@@ -95,14 +77,14 @@ watchEffect(() => {
     return
   }
   const length = props.items.length
-  const spaces = new Array(length)
+  const spaces = Array.from({ length }, () => null) as unknown as RenderItem[]
 
   let start = 0
   const cache = itemSpaces.value.length && length > itemSpaces.value.length
   if (cache) {
     start = itemSpaces.value.length
   } else {
-    columnTop.value = new Array(columnCount.value).fill(0)
+    columnTop.value = Array.from({ length: columnCount.value }, () => 0)
   }
 
   for (let i = 0; i < length; i++) {
@@ -118,11 +100,11 @@ watchEffect(() => {
     const space: RenderItem = {
       index: i,
       column: columnIndex,
-      item: props.items[i],
+      data: props.items[i],
       top,
       left,
       width: itemWidth.value,
-      height
+      height,
     }
 
     columnTop.value[columnIndex] += height + props.gap
@@ -139,3 +121,19 @@ function getColumnIndex() {
   return columnTop.value.indexOf(Math.min(...columnTop.value))
 }
 </script>
+
+<template>
+  <div
+    ref="containerRef"
+    :style="{
+      position: 'relative',
+      height: `${Math.max(...columnTop)}px`,
+      padding: isNumber(padding) ? `${padding}px` : padding,
+    }"
+  >
+    <div v-for="item in itemSpaces" :key="item.index" :style="containerStyles(item)">
+      <slot :item="item" />
+    </div>
+    <slot name="header" />
+  </div>
+</template>

@@ -1,6 +1,6 @@
 ## waterfall-vue
 
-vue响应式瀑布流
+vue 响应式瀑布流
 
 ### DEMO
 

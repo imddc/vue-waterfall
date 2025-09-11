@@ -1,23 +1,17 @@
-import { render } from 'vue'
+import type { WaterfallItem } from '~/types/index.dto'
+import { h, onBeforeMount, reactive, ref, render } from 'vue'
 import Card from '~/components/Card.vue'
-import { ResponseType, WaterfallItem } from '~/types/index.dto'
-
-const proxy_base_url = 'https://px.s.rainchan.win/'
-const handlerUrl = (url: string): string => {
-  url = url.replace('_p0.', '_p0_master1200.')
-  url = url.replace('.png', '.jpg')
-  return proxy_base_url + 'c/540x540_70/img-master/' + url
-}
+import { mockData } from '~/utils'
 
 function getRealHeight(item: WaterfallItem, width: number) {
   const div = document.createElement('div')
   render(
     h(Card, {
       data: item,
-      width: width + 'px',
-      noImage: true
+      width,
+      noImage: true,
     }),
-    div
+    div,
   )
   document.body.appendChild(div)
   const { height } = div.getBoundingClientRect()
@@ -25,7 +19,7 @@ function getRealHeight(item: WaterfallItem, width: number) {
   return height
 }
 
-export const useWaterFall = () => {
+export function useWaterFall() {
   // [x]: 配置项
   const waterfallConfig = reactive({
     minColumnCount: 3,
@@ -34,51 +28,27 @@ export const useWaterFall = () => {
     padding: 10,
     gap: 10,
     loading: false,
-    bottomDistance: 10
+    bottomDistance: 10,
   })
 
   // [x]: 先请求数据
-  const data = reactive<ResponseType & { end: boolean }>({
-    page: 0,
-    max: 0,
-    size: 30,
-    total: 0,
-    list: [],
-    end: false
-  })
-
+  const data = ref<WaterfallItem[]>([])
   async function requestData() {
-    if (data.end || waterfallConfig.loading) {
+    if (waterfallConfig.loading) {
       return
     }
 
     waterfallConfig.loading = true
-    data.page++
-    const resp: ResponseType = await fetch(
-      `https://mock.tatakai.top/images/${data.page}/${data.size}`
-    )
-      .then((res) => res.json())
+    const resp = await mockData()
       .finally(() => {
         waterfallConfig.loading = false
       })
 
-    if (resp.list.length === 0) {
-      data.end = true
-    }
-
-    data.total = resp.total
-    data.max = resp.max
-    data.list = [
-      ...data.list,
-      ...resp.list.map((item) => ({
-        ...item,
-        url: handlerUrl(item.url)
-      }))
-    ]
+    data.value.push(...resp)
   }
 
   async function checkLoadMore() {
-    if (data.end || waterfallConfig.loading) {
+    if (waterfallConfig.loading) {
       return
     }
 
@@ -109,6 +79,6 @@ export const useWaterFall = () => {
   return {
     data,
     waterfallConfig,
-    calcHeight
+    calcHeight,
   }
 }

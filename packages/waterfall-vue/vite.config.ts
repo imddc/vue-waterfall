@@ -10,15 +10,15 @@ export default defineConfig({
     lib: {
       entry: './src/index.ts',
       name: 'bundle',
-      fileName: 'bundle'
+      fileName: 'bundle',
     },
     rollupOptions: {
       external: ['vue'],
       output: {
         globals: {
-          vue: 'Vue'
-        }
-      }
-    }
-  }
+          vue: 'Vue',
+        },
+      },
+    },
+  },
 })

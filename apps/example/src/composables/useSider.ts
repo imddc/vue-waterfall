@@ -1,15 +1,17 @@
-export const useSider = () => {
+import { onMounted, onScopeDispose, ref } from 'vue'
+
+export function useSider() {
   const siderWidth = 300
   const siderShow = ref(false)
 
   const setSider = () => {
-    document.body.style.height = window.innerHeight + 'px'
+    document.body.style.height = `${window.innerHeight}px`
     if (window.innerWidth > 768) {
       siderShow.value = true
-      document.body.style.paddingLeft = siderWidth + 'px'
+      document.body.style.paddingLeft = `${siderWidth}px`
     } else {
       siderShow.value = false
-      document.body.style.paddingLeft = 0 + ''
+      document.body.style.paddingLeft = `${0}`
     }
   }
 
@@ -18,12 +20,12 @@ export const useSider = () => {
     window.addEventListener('resize', setSider, false)
   })
 
-  onUnmounted(() => {
+  onScopeDispose(() => {
     window.removeEventListener('resize', setSider, false)
   })
 
   return {
     siderShow,
-    siderWidth
+    siderWidth,
   }
 }
