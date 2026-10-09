@@ -35,7 +35,8 @@ interface WaterfallProps {
   gap?: number
   padding?: number | string
   minItemWidth?: number
-  items: ItemType<T>[]
+  // 有默认值，因此声明为可选（withDefaults 会把解析后的类型补回非可选）
+  items?: ItemType<T>[]
   calcItemHeight?: (item: any, itemWidth: number) => number
 }
 
@@ -79,7 +80,7 @@ const columnCount = computed<number>(() => {
   }
   return props.minColumnCount
 })
-const columnTop = ref(new Array(columnCount.value).fill(0))
+const columnTop = ref(Array.from({ length: columnCount.value }, () => 0))
 const itemWidth = computed(() => {
   if (!containerRef.value || columnCount.value <= 0) {
     return 0
@@ -95,14 +96,16 @@ watchEffect(() => {
     return
   }
   const length = props.items.length
-  const spaces = new Array(length)
+  // 用空数组 + 逐位赋值：下面循环会把 0..length-1 每个位置都填上，
+  // 同时避开 new Array(n) 那种「一个参数是长度还是元素」的歧义
+  const spaces: RenderItem[] = []
 
   let start = 0
   const cache = itemSpaces.value.length && length > itemSpaces.value.length
   if (cache) {
     start = itemSpaces.value.length
   } else {
-    columnTop.value = new Array(columnCount.value).fill(0)
+    columnTop.value = Array.from({ length: columnCount.value }, () => 0)
   }
 
   for (let i = 0; i < length; i++) {

@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  // plugins 显式列全：声明它会替换默认集合
+  "plugins": ["typescript", "unicorn", "oxc", "vue"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error"
+  },
+  "env": {
+    "builtin": true,
+    "browser": true,
+    "es2024": true
+  },
+  // monorepo：两个包的产物与依赖都不进检查范围
+  "ignorePatterns": ["node_modules", "**/node_modules", "**/dist", "coverage"]
+}

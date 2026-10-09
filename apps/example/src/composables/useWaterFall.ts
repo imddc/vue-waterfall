@@ -25,6 +25,13 @@ function getRealHeight(item: WaterfallItem, width: number) {
   return height
 }
 
+// 不捕获 useWaterFall 内部任何变量，提到模块作用域即可（仍通过返回值对外暴露）
+const calcHeight = (item: WaterfallItem, itemWidth: number) => {
+  const { width, height } = item
+  const realHeight = getRealHeight(item, itemWidth)
+  return (itemWidth * height) / width + realHeight
+}
+
 export const useWaterFall = () => {
   // [x]: 配置项
   const waterfallConfig = reactive({
@@ -93,12 +100,6 @@ export const useWaterFall = () => {
     }
 
     requestAnimationFrame(checkLoadMore)
-  }
-
-  const calcHeight = (item: WaterfallItem, itemWidth: number) => {
-    const { width, height } = item
-    const realHeight = getRealHeight(item, itemWidth)
-    return (itemWidth * height) / width + realHeight
   }
 
   // [x]: 触底加载

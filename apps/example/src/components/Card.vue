@@ -68,23 +68,20 @@ onBeforeMount(() => {
     return
   }
   height.value = '100%'
-  new Promise((resolve) => {
-    const img = new Image()
-    img.src = props.data.url
-    if (img.complete) {
-      loaded.value = true
-      resolve(true)
-      return
-    }
-    img.onload = () => {
-      loaded.value = true
-      resolve(true)
-    }
-    img.onerror = () => {
-      console.log('img loaded error', props.data.url)
-      loaded.value = true
-      resolve(true)
-    }
+  // 预加载图片：命中缓存直接标记完成，否则等 load / error 事件。
+  // 原来包了一层 Promise，但 resolve 从没被使用（也没有 await），去掉包装语义不变
+  const img = new Image()
+  img.src = props.data.url
+  if (img.complete) {
+    loaded.value = true
+    return
+  }
+  img.addEventListener('load', () => {
+    loaded.value = true
+  })
+  img.addEventListener('error', () => {
+    console.log('img loaded error', props.data.url)
+    loaded.value = true
   })
 })
 </script>

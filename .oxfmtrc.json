@@ -1,0 +1,15 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  // 逐项对齐原 .prettierrc，风格不漂移
+  "printWidth": 80,
+  "semi": false,
+  "tabWidth": 2,
+  "useTabs": false,
+  "singleQuote": true,
+  "trailingComma": "none",
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  // 各 package.json 由包管理器维护键顺序；lockfile 与 Markdown 不参与格式化
+  "sortPackageJson": false,
+  "ignorePatterns": ["pnpm-lock.yaml", "**/*.md"]
+}

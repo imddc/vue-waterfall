@@ -6,15 +6,15 @@ export const useElementSize = (el: Ref<HTMLElement | undefined>) => {
 
   watch(
     () => el.value,
-    (el) => {
+    (element) => {
       const observer = new ResizeObserver((entries) => {
         const [entry] = entries
         width.value = entry.contentRect.width
         height.value = entry.contentRect.height
       })
 
-      if (el) {
-        observer.observe(el)
+      if (element) {
+        observer.observe(element)
       }
     }
   )
